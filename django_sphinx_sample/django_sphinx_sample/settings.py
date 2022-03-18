@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+from django.contrib.messages import constants as messages
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +43,11 @@ INSTALLED_APPS = [
 
     'courselist.apps.CourselistConfig',
     'accounts.apps.AccountsConfig',
+
+    'django.contrib.sites',
+    'addauth',
+    'allauth.account',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -130,6 +137,17 @@ LOGGING = {
     }
 }
 
+# Set up site identification ID use django.contrib.sites to django-allauth
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # for general user (mail address authentication)
+
+    'django.contrib.auth.backends.ModelBackend',
+    # for management site (user name authentication)
+)
+
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
@@ -150,6 +168,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# change authentication setting to mail address
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+
+# set up mail address verification in sign up
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+
+# set up transition for after login/logout
+ACCOUNT_REDIRECT_URL = 'courselist:index'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -179,3 +207,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'alert alert-danger',
+    messages.WARNING: 'alert alert-warning',
+    messages.SUCCESS: 'alert alert-success',
+    messages.INFO: 'alert alert-info',
+}
