@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'courselist.apps.CourselistConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,8 @@ LOGGING = {
         },
     }
 }
+
+AUTH_USER_MODEL = 'accounts.CustomerUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
