@@ -83,6 +83,49 @@ DATABASES = {
 }
 
 
+# Set up Logging
+LOGGING = {
+    'version': 1,   # const 1
+    'disable_existing_loggers': False,
+
+    # Set up Logger
+    'loggers': {
+        # Using logger  for django
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+
+        # Using logger for regular_course application
+        'regular_course': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+
+    # Set up handlers
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'dev'
+        },
+    },
+
+    # Set up formatters
+    'formatters': {
+        'dev': {
+            'format': '\t'.join([
+                '%(asctime)s',
+                '[%(levelname)s]',
+                '%(pathname)s(Line:%(lineno)d)',
+                '%(message)s'
+            ])
+        },
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
