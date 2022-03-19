@@ -130,6 +130,18 @@ LOGGING = {
     }
 }
 
+# Set up site identification ID use django.contrib.sites to django-allauth
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # for general user (mail address authentication)
+
+    'django.contrib.auth.backends.ModelBackend',
+    # for management site (user name authentication)
+)
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -149,7 +161,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# change authentication setting to mail address
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
 
+# set up mail address verification in sign up
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+
+# set up transition for after login/logout
+ACCOUNT_REDIRECT_URL = 'courselist:index'
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -173,3 +194,9 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# django-all-alluthが送信するメールの件名に自動付与される接頭辞をブランクにする設定
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+
+# デフォルトのメール送信元を設定
+DEFAULT_FROM_EMAIL = os.environ.get('FROM_EMAIL')
